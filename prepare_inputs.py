@@ -3,6 +3,12 @@ import tarfile
 
 
 def sort_files(tarfile_name):
+    '''Reads the files from tarfile_name and sorts them by number of atoms.
+
+       return: A list of pairs such that the 1-st element of each pair is the 
+               name of an XYZ file and the 0-th element is the number of atoms
+               in that file.
+    '''
     rv = []
 
     with tarfile.open(tarfile_name, mode='r:gz') as tar:
@@ -46,7 +52,7 @@ def generate_input(geom):
     output += geom
     output += 'end\n\n'
     output += 'basis\n'
-    output += '  * library def2-TZVPD\n'
+    output += '  * library cc-pvdz\n'
     output += 'end\n\n'
     output += 'dft\n'
     output += '  xc b3lyp\n'
@@ -67,9 +73,16 @@ if __name__ == '__main__':
     input_dir = 'inputs'
 
     files = sort_files(tarfile_name)
-    filename = files[0][1]
-    geom = grab_geom(tarfile_name, filename + '.xyz')
-    geom_str = stringify_coordinates(geom)
-    input = generate_input(geom_str)
-    input_path = os.path.join(input_dir, filename + '.in')
-    write_input(input, input_path)
+
+    for _, filename in files:
+        geom = grab_geom(tarfile_name, filename + '.xyz')
+        geom_str = stringify_coordinates(geom)
+        input = generate_input(geom_str)
+
+        no_xyz_dir = os.path.split(filename)[1]
+        input_path = os.path.join(input_dir, no_xyz_dir + '.in')
+
+        if not os.path.exists(input_dir):
+            os.makedirs(input_dir)
+
+        write_input(input, input_path)
