@@ -68,13 +68,13 @@ def write_input(geom, output_file):
 
 
 if __name__ == '__main__':
-    tarfile_name = 'xyz.tar.gz'
+    tarfile_name = 'no_solvent.tar.gz'
     xyz_dir = 'xyz'
     input_dir = 'inputs'
 
     files = sort_files(tarfile_name)
 
-    for _, filename in files:
+    for _, filename in files[:1]:
         geom = grab_geom(tarfile_name, filename + '.xyz')
         geom_str = stringify_coordinates(geom)
         input = generate_input(geom_str)

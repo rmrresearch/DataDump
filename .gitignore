@@ -1,2 +1,5 @@
+# Auto-generated input directory
 inputs/
-xyz/
+
+# Mac file
+.DS_Store
