@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     files = sort_files(tarfile_name)
 
-    for _, filename in files[:1]:
+    for _, filename in files:
         geom = grab_geom(tarfile_name, filename + '.xyz')
         geom_str = stringify_coordinates(geom)
         input = generate_input(geom_str)
