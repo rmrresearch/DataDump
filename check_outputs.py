@@ -3,18 +3,16 @@ import re
 
 
 def was_optimized(line):
-    converged_message = '\bOptimization converged\b'
-
-    if re.search(line, converged_message):
+    converged_message = r'\bOptimization converged\b'
+    if line and re.search(converged_message, line):
         return True
 
     return False
 
 
 def job_completed(line):
-    completed_message = '\bTotal times  cpu:\b'
-
-    if re.search(line, completed_message):
+    completed_message = r'\bTotal times  cpu:'
+    if line and re.search(completed_message, line):
         return True
 
     return False
@@ -23,6 +21,7 @@ def job_completed(line):
 def run_checks(line, status):
     if not status['Optimized']:
         status['Optimized'] = was_optimized(line)
+
     if not status['Completed']:
         status['Completed'] = job_completed(line)
 
@@ -47,7 +46,7 @@ if __name__ == '__main__':
         with open(file_name) as file:
             status = {'Optimized': False, 'Completed': False}
 
-            for line in file:
+            for line in file.read().splitlines():
                 run_checks(line, status)
 
             print_results(file_name, status)
