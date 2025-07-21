@@ -68,7 +68,8 @@ def write_input(geom, output_file):
 
 
 if __name__ == '__main__':
-    tarfile_name = 'no_solvent.tar.gz'
+    #tarfile_name = 'no_solvent.tar.gz'
+    tarfile_name = 'chembl_xyz.tar.gz'
     xyz_dir = 'xyz'
     input_dir = 'inputs'
 
