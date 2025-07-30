@@ -40,7 +40,10 @@ def print_results(file_name, status):
 if __name__ == '__main__':
     output_dir = 'outputs'
 
-    for output_file in os.listdir(output_dir):
+    good_count = 0
+    bad_count = 0
+
+    for output_file in sorted(os.listdir(output_dir), key=lambda f: int(re.search(r'\d+', f).group()) if re.search(r'\d+', f) else float('inf')):
         file_name = os.path.join(output_dir, output_file)
 
         with open(file_name) as file:
@@ -50,3 +53,13 @@ if __name__ == '__main__':
                 run_checks(line, status)
 
             print_results(file_name, status)
+
+            is_good = all(status.values())
+            if is_good:
+                good_count += 1
+            else:
+                bad_count += 1
+
+    print(f"\nSummary:")
+    print(f"  Good files: {good_count}")
+    print(f"  Not good files: {bad_count}")
